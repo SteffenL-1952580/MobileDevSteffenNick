@@ -1,6 +1,8 @@
 package com.example.a11601743.firstproject;
 
-public class Movie {
+
+
+public class Movie  {
     public String title;
     public int rating;
 
@@ -40,8 +42,6 @@ public class Movie {
     }
 
     public int year;
-
-
 
 
 }

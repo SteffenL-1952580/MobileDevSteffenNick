@@ -1,8 +1,7 @@
 package com.example.a11601743.firstproject;
 
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import android.support.v7.widget.RecyclerView;
@@ -46,6 +45,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
         return list.size();
     }
 
+    public Movie getMovie(int position){
+        return list.get(position);
+    }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView textTitle, textRating, textYear;
@@ -64,18 +67,21 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
 
-            //FragmentManager manager = ((Activity) context).getFragmentManager();
-
-
-           // MovieDetailFragment movieDetailFragment = manager.findFragmentById(R.id.detail);
-
-
             if(myToast != null){
                 myToast.cancel();
             }
 
             myToast = Toast.makeText(context, "item " + clickedPosition + " clicked", Toast.LENGTH_SHORT);
             myToast.show();
+
+            Movie movieToPass = getMovie(clickedPosition);
+
+
+            Class destinationActivity= DetailActivity.class;
+            Intent startChildActivityIntent = new Intent(context, destinationActivity);
+
+            startChildActivityIntent.putExtra("title",movieToPass.title );
+            context.startActivity(startChildActivityIntent);
         }
     }
 }

@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class FirstMainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
    /*
     private RecyclerView movieList;
@@ -51,7 +51,8 @@ public class FirstMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_first_main);
+        //setContentView(R.layout.activity_recyclerview_main);
+        setContentView(R.layout.activity_main);
 
         mList = findViewById(R.id.movie_recycler_view);
         movieLijst= new ArrayList<>();
