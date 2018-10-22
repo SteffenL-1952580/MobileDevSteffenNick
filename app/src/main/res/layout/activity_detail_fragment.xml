@@ -57,6 +57,12 @@
 
                 />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/NotificatieButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Send Notificatie" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
