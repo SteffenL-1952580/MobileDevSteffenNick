@@ -1,6 +1,7 @@
 package com.example.a11601743.firstproject;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.a11601743.firstproject.DbHelper.DataBaseHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,12 +69,33 @@ public class MainActivity extends AppCompatActivity {
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(adapter);
 
-        getData();
+        this.deleteDatabase("MovieDbApp");
+
+        DataBaseHelper db = new DataBaseHelper(this);
+        db.addMovie(new Movie("NickMovie" , 2018, 10, "A movie based on the life of Nick"));
+        db.addMovie(new Movie("SteffenMovie" , 2017, 9, "a documentary about Steffen himself"));
+
+        List<Movie> movies = db.getAllMovies();
+        String text = "";
+
+        for (Movie m : movies){
+            String log = "ID" + m.getId() + ", Title: " + m.getTitle() + ", Rating: " + m.getRating() + " Year: " + m.getYear() + " Description: " + m.description +"\n";
+            text = text + log;
+        }
+
+        TextView textviewmovie = (TextView) findViewById(R.id.textViewMovie);
+        textviewmovie.setText(text);
+
+        //getData();
 
     }
 
-    private void getData(){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest (Request.Method.GET,url,null, new Response.Listener<JSONObject>() {
+    private void getData() {
+
+
+    }
+
+  /*      JsonObjectRequest jsonObjectRequest = new JsonObjectRequest (Request.Method.GET,url,null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try{
@@ -106,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
 
     }
-
+*/
 
 
 

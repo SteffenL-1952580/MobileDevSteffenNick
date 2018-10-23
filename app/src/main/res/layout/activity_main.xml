@@ -10,16 +10,20 @@
 
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/textViewMovie"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Movies" />
-
+            android:text="TextView" />
         <fragment android:name="com.example.a11601743.firstproject.ListFragment"
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Movies" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
