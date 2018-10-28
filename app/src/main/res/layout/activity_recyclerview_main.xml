@@ -7,11 +7,17 @@
     tools:context=".MainActivity">
 
 
-
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
     <android.support.v7.widget.RecyclerView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/movie_recycler_view"
-    />
+        />
+</RelativeLayout>
+
 
 </android.support.constraint.ConstraintLayout>

@@ -1,9 +1,18 @@
 package com.example.a11601743.firstproject;
 
+
+import android.app.Activity;
+import android.support.v4.app.FragmentTransaction;
+//import android.app.FragmentTransaction;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+//import android.app.FragmentManager;
+
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +55,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
     }
 
     public Movie getMovie(int position){
+
         return list.get(position);
     }
 
@@ -76,12 +86,30 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
 
             Movie movieToPass = getMovie(clickedPosition);
 
+            FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
+            DetailFragment detailFragment = (DetailFragment) manager.findFragmentById(R.id.detail);
 
-            Class destinationActivity= DetailActivity.class;
-            Intent startChildActivityIntent = new Intent(context, destinationActivity);
+            if ( detailFragment != null && detailFragment.isVisible()) {
+                // Visible: send bundle
+                DetailFragment newFragment = new DetailFragment();
+                Bundle bundle=new Bundle();
+                bundle.putString("title", movieToPass.title);
+                newFragment.setArguments(bundle);
 
-            startChildActivityIntent.putExtra("title",movieToPass.title );
-            context.startActivity(startChildActivityIntent);
+                FragmentTransaction transaction = manager.beginTransaction();
+                transaction.replace(detailFragment.getId(), newFragment);
+                transaction.addToBackStack(null);
+
+                // Commit the transaction
+                transaction.commit();
+            }
+            else {
+                // Not visible: start as intent
+                Intent intent = new Intent(context, DetailActivity.class);
+                intent.putExtra("title", movieToPass.title);
+                context.startActivity(intent);
+            }
+
         }
     }
 }

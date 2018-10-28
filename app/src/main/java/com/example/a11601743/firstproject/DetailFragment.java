@@ -1,11 +1,6 @@
 package com.example.a11601743.firstproject;
 
-import android.app.AlarmManager;
-import android.app.Fragment;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.content.Context;
-import android.content.Intent;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -17,18 +12,23 @@ import android.widget.TextView;
 
 import com.example.a11601743.firstproject.Notification.NotificationBuilder;
 
-public class DetailFragment extends Fragment {
+public class DetailFragment extends android.support.v4.app.Fragment {
 
     @Override
     public View onCreateView (LayoutInflater inflater , ViewGroup container , Bundle savedInstanceState){
 
         View view = inflater.inflate(R.layout.activity_detail_fragment, container , false);
 
+        TextView titleTextView = (TextView) view.findViewById(R.id.title);
+        //TextView ratingTextView = (TextView) view.findViewById(R.id.rating);
 
+        Bundle bundle = getArguments();
 
-        TextView titleTextView = (TextView) view.findViewById(R.id.titleText);
-        TextView ratingTextView = (TextView) view.findViewById(R.id.ratingText);
-        Button buttonNotifi = (Button) view.findViewById(R.id.NotificatieButton);
+        if(bundle != null){
+            titleTextView.setText(getArguments().getString("title"));
+        }
+
+        Button buttonNotify = (Button) view.findViewById(R.id.NotificatieButton);
 
         View.OnClickListener buttonListener = new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -42,7 +42,7 @@ public class DetailFragment extends Fragment {
             }
         };
 
-        buttonNotifi.setOnClickListener(buttonListener);
+        buttonNotify.setOnClickListener(buttonListener);
 
         return view;
     }
