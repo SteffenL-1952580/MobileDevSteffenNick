@@ -1,6 +1,8 @@
 package com.example.a11601743.firstproject;
 
 
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +21,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +67,8 @@ public class ListFragment extends android.support.v4.app.Fragment {
         mList.setAdapter(adapter);
 
         getData();
+        //Uri bultUri = Uri.parse(url).buildUpon().appendQueryParameter();
+        //new AsyncQueryTask().execute();
     }
 
     private void getData() {
@@ -97,6 +102,15 @@ public class ListFragment extends android.support.v4.app.Fragment {
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(jsonObjectRequest);
 
+    }
+
+    public class AsyncQueryTask extends AsyncTask<URL, Void, Void> {
+
+
+        @Override
+        protected Void doInBackground(URL... urls) {
+            return null;
+        }
     }
 
 }

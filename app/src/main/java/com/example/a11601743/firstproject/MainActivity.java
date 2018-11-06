@@ -1,6 +1,10 @@
 package com.example.a11601743.firstproject;
 
+import android.content.res.Configuration;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -59,6 +63,14 @@ public class MainActivity extends AppCompatActivity {
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(adapter);*/
 
+        final FragmentManager manager = getSupportFragmentManager();
+        final FragmentTransaction transaction = manager.beginTransaction();
+       if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+
+           transaction.add(R.id.detail, new DetailFragment());
+           transaction.commit();
+       }
+
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_Layout);
         tabLayout.addTab(tabLayout.newTab().setText("Home"));
         tabLayout.addTab(tabLayout.newTab().setText("Favorieten"));
@@ -72,7 +84,24 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+
+                if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    Fragment fragment = manager.findFragmentById(R.id.detail);
+                    FragmentTransaction transaction1 = manager.beginTransaction();
+                    if (tab.getPosition() == 1) {
+
+                        transaction1.remove(fragment);
+                        transaction1.commit();
+                    }else{
+                        transaction1.add(R.id.detail, new DetailFragment());
+                        transaction1.commit();
+                    }
+                }
+
+
                 viewPager.setCurrentItem(tab.getPosition());
+
+
             }
 
             @Override

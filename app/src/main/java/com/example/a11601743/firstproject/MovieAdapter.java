@@ -81,12 +81,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
                 myToast.cancel();
             }
 
-            myToast = Toast.makeText(context, "item " + clickedPosition + " clicked", Toast.LENGTH_SHORT);
-            myToast.show();
-
             Movie movieToPass = getMovie(clickedPosition);
 
+            myToast = Toast.makeText(context, movieToPass.title, Toast.LENGTH_SHORT);
+            myToast.show();
+
             FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
+
             DetailFragment detailFragment = (DetailFragment) manager.findFragmentById(R.id.detail);
 
             if ( detailFragment != null && detailFragment.isVisible()) {
@@ -105,6 +106,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
             }
             else {
                 // Not visible: start as intent
+
+
                 Intent intent = new Intent(context, DetailActivity.class);
                 intent.putExtra("title", movieToPass.title);
                 context.startActivity(intent);

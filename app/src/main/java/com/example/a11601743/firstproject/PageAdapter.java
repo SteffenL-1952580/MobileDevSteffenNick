@@ -3,6 +3,8 @@ package com.example.a11601743.firstproject;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 
 
 public class PageAdapter extends FragmentPagerAdapter {
@@ -21,6 +23,7 @@ public class PageAdapter extends FragmentPagerAdapter {
             case 0:
                 return new com.example.a11601743.firstproject.ListFragment();
             case 1:
+
                 return new FavoritesFragment();
         }
 
