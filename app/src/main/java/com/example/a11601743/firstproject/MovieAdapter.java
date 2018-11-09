@@ -45,7 +45,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
         Movie movie = list.get(position);
 
         holder.textTitle.setText(movie.getTitle());
-        //holder.textRating.setText(String.valueOf(movie.getRating()));
+        holder.textRating.setText(String.valueOf(movie.getRating()));
        // holder.textYear.setText(String.valueOf(movie.getYear()));
     }
 
@@ -67,8 +67,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
             super(itemView);
 
             textTitle = itemView.findViewById(R.id.title);
-            //textRating = itemView.findViewById(R.id.rating);
-            //textYear = itemView.findViewById(R.id.main_year);
+            textRating = itemView.findViewById(R.id.rating);
 
             itemView.setOnClickListener(this);
         }
@@ -95,6 +94,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
                 DetailFragment newFragment = new DetailFragment();
                 Bundle bundle=new Bundle();
                 bundle.putString("title", movieToPass.title);
+                bundle.putString("rating", String.valueOf(movieToPass.rating));
+                bundle.putString("year", movieToPass.year);
+                bundle.putString("description", movieToPass.description);
+
                 newFragment.setArguments(bundle);
 
                 FragmentTransaction transaction = manager.beginTransaction();
@@ -110,6 +113,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
 
                 Intent intent = new Intent(context, DetailActivity.class);
                 intent.putExtra("title", movieToPass.title);
+                intent.putExtra("rating", movieToPass.rating.toString());
+                intent.putExtra("year", movieToPass.year);
+                intent.putExtra("description", movieToPass.description);
                 context.startActivity(intent);
             }
 

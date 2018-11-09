@@ -26,14 +26,23 @@
 
                     />
 
-                <FrameLayout
-                    android:id="@+id/detail"
-                    android:name="com.example.a11601743.firstproject.DetailFragment"
-                    android:layout_width="222dp"
-                    android:layout_height="140dp"
+                <ScrollView
+                    android:layout_width="350dp"
+                    android:layout_height="309dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginTop="50dp"
-                    />
+                    android:layout_marginTop="49dp">
+                        <FrameLayout
+                            android:id="@+id/detail"
+                            android:name="com.example.a11601743.firstproject.DetailFragment"
+                            android:layout_width="350dp"
+                            android:layout_height="309dp"
+                            android:layout_alignParentRight="true"
+
+
+
+                            />
+                </ScrollView>
+
 
         </RelativeLayout>
 

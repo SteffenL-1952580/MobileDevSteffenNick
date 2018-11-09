@@ -1,7 +1,15 @@
 package com.example.a11601743.firstproject;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.res.Configuration;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -12,6 +20,10 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -19,6 +31,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.a11601743.firstproject.Notification.NotificationBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LocationListener {
 
 
    private RecyclerView mList;
@@ -39,43 +52,38 @@ public class MainActivity extends AppCompatActivity {
    //private ViewPager viewPager;
    private TabLayout tabLayout;
    private Toolbar toolbar;
+   private LocationManager locationManager;
     //private String url =  "https://api.themoviedb.org/3/movie/550?api_key=7878b83d58394c2db83e16b69d3c57d0";
     private String url =  "https://api.themoviedb.org/3/movie/now_playing?api_key=7878b83d58394c2db83e16b69d3c57d0&page=1";
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_recyclerview_main);
         setContentView(R.layout.activity_main);
 
-       // mList = findViewById(R.id.movie_recycler_view);
-       // movieLijst= new ArrayList<>();
-        //adapter = new MovieAdapter(MainActivity.this, movieLijst);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
-        //linearLayoutManager = new LinearLayoutManager(this);
-        //linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        //dividerItemDecoration = new DividerItemDecoration(mList.getContext(),linearLayoutManager.getOrientation());
 
-       /* mList.setHasFixedSize(true);
-        mList.setLayoutManager(linearLayoutManager);
-        mList.addItemDecoration(dividerItemDecoration);
-        mList.setAdapter(adapter);*/
+       final FragmentManager manager = getSupportFragmentManager();
+       final FragmentTransaction transaction = manager.beginTransaction();
 
-        final FragmentManager manager = getSupportFragmentManager();
-        final FragmentTransaction transaction = manager.beginTransaction();
        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
 
            transaction.add(R.id.detail, new DetailFragment());
            transaction.commit();
        }
 
+
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_Layout);
         tabLayout.addTab(tabLayout.newTab().setText("Home"));
-        tabLayout.addTab(tabLayout.newTab().setText("Favorieten"));
+        tabLayout.addTab(tabLayout.newTab().setText("Favorites"));
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        getLocation();
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         final PageAdapter adapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
@@ -88,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
                 if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                     Fragment fragment = manager.findFragmentById(R.id.detail);
                     FragmentTransaction transaction1 = manager.beginTransaction();
+
+
                     if (tab.getPosition() == 1) {
 
                         transaction1.remove(fragment);
@@ -97,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
                         transaction1.commit();
                     }
                 }
-
 
                 viewPager.setCurrentItem(tab.getPosition());
 
@@ -113,48 +122,52 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-            //getData();
+
         }
 
+    void getLocation() {
+        try {
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
 
-    /*private void getData() {
+            //Location l = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+    }
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    @Override
+    public void onLocationChanged(Location location) {
+        try {
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest (Request.Method.GET,url,null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try{
-                    JSONArray results = response.getJSONArray("results");
+            double lat = location.getLatitude();
+            double lon = location.getLongitude();
+            NotificationBuilder notificationBuilder = new NotificationBuilder(this);
 
-                    for (int i = 0; i < results.length(); i++){
-                            JSONObject object = results.getJSONObject(i);
-
-                            Movie movie = new Movie();
-                            movie.setTitle(object.getString("title"));
-                            movieLijst.add(movie);
-                    }
-
-
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
+            notificationBuilder.giveNotification("MovieApp" , "You are at location lon: " + lon + " lat: " + lat);
+            locationManager = null;
 
 
-                adapter.notifyDataSetChanged();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Log.e("Volley", error.toString());
 
-            }
-        });
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(jsonObjectRequest);
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
 
     }
-*/
 
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+        Toast.makeText(MainActivity.this, "Please enable GPS know when you can watch to the stars.", Toast.LENGTH_SHORT).show();
+    }
 
 
 }

@@ -20,7 +20,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_MOVIES = "movies";
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "title";
-    private static final String KEY_RATING = "rating";
     private static final String KEY_YEAR = "year";
     private static final String KEY_DESCRIPTION = "description";
 
@@ -30,7 +29,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_MOVIES_TABLE = "CREATE TABLE " + TABLE_MOVIES + "("
-                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT," + KEY_YEAR + " TEXT," + KEY_RATING + " TEXT," + KEY_DESCRIPTION + " TEXT" + ")";
+                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT," + KEY_YEAR + " TEXT," +  KEY_DESCRIPTION + " TEXT" + ")";
         db.execSQL(CREATE_MOVIES_TABLE);
     }
 
@@ -45,7 +44,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, movie.getTitle());
-        values.put(KEY_RATING, movie.getRating());
         values.put(KEY_YEAR, movie.getYear());
         values.put(KEY_DESCRIPTION, movie.getDescription());
 
@@ -60,17 +58,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        if(cursor.moveToFirst()){
-            do{
-                Movie movie = new Movie();
-                movie.setId(Integer.parseInt(cursor.getString(0)));
-                movie.setTitle(cursor.getString(1));
-                movie.setYear(Integer.parseInt((cursor.getString((2)))));
-                movie.setRating(Integer.parseInt(cursor.getString(3)));
-                movie.setDescription(cursor.getString(4));
-                movieList.add(movie);
-            }while (cursor.moveToNext());
-        }
+       while (cursor.moveToNext()){
+           Movie movie = new Movie();
+           movie.setId(Integer.parseInt(cursor.getString(0)));
+           movie.setTitle(cursor.getString(1));
+           movie.setYear((cursor.getString((2))));
+           movie.setDescription(cursor.getString(3));
+           movieList.add(movie);
+       }
 
         return movieList;
 

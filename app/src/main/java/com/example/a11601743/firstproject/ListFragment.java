@@ -1,8 +1,6 @@
 package com.example.a11601743.firstproject;
 
 
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,7 +19,6 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,17 +31,15 @@ public class ListFragment extends android.support.v4.app.Fragment {
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_recyclerview_main, container, false);
-;
+
         return view;
     }
 
@@ -67,12 +62,10 @@ public class ListFragment extends android.support.v4.app.Fragment {
         mList.setAdapter(adapter);
 
         getData();
-        //Uri bultUri = Uri.parse(url).buildUpon().appendQueryParameter();
-        //new AsyncQueryTask().execute();
+
     }
 
     private void getData() {
-
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest (Request.Method.GET,url,null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -84,6 +77,10 @@ public class ListFragment extends android.support.v4.app.Fragment {
 
                         Movie movie = new Movie();
                         movie.setTitle(object.getString("title"));
+                        movie.setDescription(object.getString("overview"));
+                        movie.setYear(object.getString("release_date"));
+                        movie.setRating(object.getDouble("vote_average"));
+
                         movieLijst.add(movie);
                     }
                 }catch(Exception e){
@@ -102,15 +99,6 @@ public class ListFragment extends android.support.v4.app.Fragment {
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(jsonObjectRequest);
 
-    }
-
-    public class AsyncQueryTask extends AsyncTask<URL, Void, Void> {
-
-
-        @Override
-        protected Void doInBackground(URL... urls) {
-            return null;
-        }
     }
 
 }

@@ -27,8 +27,15 @@ public class DetailActivity extends AppCompatActivity { //FragmentActivity
 
         Intent intent = getIntent();
 
-        String movieTitle = intent.getStringExtra("title");
 
+
+        String movieTitle = intent.getStringExtra("title");
+        String movieYear = intent.getStringExtra("year");
+        String movieRating = intent.getStringExtra("rating");
+        String movieDescription = intent.getStringExtra("description");
         ((TextView) findViewById(R.id.title)).setText(movieTitle);
+        ((TextView) findViewById(R.id.year)).setText(movieYear);
+        ((TextView) findViewById(R.id.description)).setText(movieDescription);
+        ((TextView) findViewById(R.id.rating)).setText(movieRating);
     }
 }

@@ -1,12 +1,11 @@
 package com.example.a11601743.firstproject;
 
 
-
 public class Movie  {
     public int id;
     public String title;
-    public int year;
-    public int rating;
+    public String year;
+    public Double rating;
     public String genre;
     public String description;
 
@@ -14,14 +13,14 @@ public class Movie  {
 
     }
 
-    public Movie(String title, int year, int rating, String beschrijving){
+    public Movie(String title, String year, Double rating, String beschrijving){
         this.title = title;
         this.year = year;
         this.rating = rating;
         this.description = beschrijving;
     }
 
-    public Movie(String title, int rating, int year){
+    public Movie(String title, Double rating, String year){
         this.title = title;
         this.rating = rating;
         this.year = year;
@@ -36,19 +35,19 @@ public class Movie  {
         this.title = title;
     }
 
-    public int getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 
-    public int getYear() {
+    public String getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(String year) {
         this.year = year;
     }
 
